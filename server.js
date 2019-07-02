@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const logger = require("morgan");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const db = require("./models");
@@ -14,9 +15,9 @@ mongoose.connect("mongodb://localhost/newsdb", { useNewUrlParser: true })
 //     console.log("Database error:", err);
 // });
 
-// app.get("/", function (req, res) {
-//     res.send("Page loaded success");
-// })
+app.get("/", function (req, res) {
+    res.send("Page loaded success");
+})
 // app.get("/all", function (req, res) {
 //     db.news.find({}, function (err, found) {
 //         if (err) { console.log(err); }
@@ -52,7 +53,7 @@ app.get("/scrape", function (req, res) {
 
 
 
-app.listen(8080, function () {
+app.listen(PORT, function () {
     console.log("App listening on port 8080");
 });
 

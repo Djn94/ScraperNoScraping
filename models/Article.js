@@ -18,5 +18,5 @@ const ArticleSchema = new Schema({
         ref: "Comment"
     }
 });
-const Article = mongoose.model("Article", CommentSchema);
+const Article = mongoose.model("Article", ArticleSchema);
 module.exports = Article;

@@ -1,10 +1,11 @@
 {
   "name": "scrapernoscraping",
   "version": "1.0.0",
-  "description": "",
+  "description": "This application is a web scraper for current news articles. The MongoDB functionality allows users to input comments that are saved to the database and viewed by everyone.  NPM packages required: 1. Express 2. Express-handlebars 3. Mongoose 4. Cheerio 5. Axios",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -21,7 +22,9 @@
     "cheerio": "^1.0.0-rc.3",
     "express": "^4.17.1",
     "express-handlebars": "^3.1.0",
-    "mongojs": "^2.6.0",
-    "mongoose": "^5.6.2"
-  }
+    "logger": "0.0.1",
+    "mongoose": "^5.6.2",
+    "morgan": "^1.9.1"
+  },
+  "devDependencies": {}
 }
