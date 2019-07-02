@@ -1,5 +1,4 @@
-import { ENETUNREACH } from "constants";
-
+//populate articles div with information
 $.getJSON("/articles", function (data) {
     for (const i = 0; i < data.length; i++) {
         //reconfigure to each loop
@@ -30,3 +29,21 @@ $(document).on("click", "p", function () {
         };
     });
 });
+
+//save comment button functionality
+$(document).on("click", "#savecomment", function () {
+    const thisId = $(this).attr("data-id");
+    $.ajax({
+        method: "POST",
+        url: "/articles" + thisId,
+        data: {
+            author: $("#authorinput").val(),
+            commentBody: $("#commentinput").val()
+        }
+    }).then(function (data) {
+        console.log(data)
+        $("#notes").empty();
+    });
+    $("#authorinput").val("");
+    $("#commentinput").val("");
+})
