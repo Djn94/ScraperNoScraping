@@ -4,7 +4,7 @@ const logger = require("morgan");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const db = require("./models");
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://heroku_h23n30qs:7ckhars6aq49t2nodg898hv1cv@ds245927.mlab.com:45927/heroku_h23n30qs";
 
 const app = express();
 app.use(logger("dev"))
