@@ -1,14 +1,17 @@
 //populate articles div with information
+
+console.log('java running');
 $.getJSON("/articles", function (data) {
-    for (const i = 0; i < data.length; i++) {
+    for (var i = 0; i < data.length; i++) {
         //reconfigure to each loop
         //need div id=articles to append to in html
-        $("#articles").append("<p data-id='" + data[i]._id + "'>" +
+        $("#articles").append(
+            "<p data-id='" + data[i]._id + "'>" +
             data[i].title +
             "<br />" + data[i].link + "</br>" + data[i].summary + "</p>");
+
     }
 });
-
 $(document).on("click", "p", function () {
     $("#comments").empty();
     //need a div for comments

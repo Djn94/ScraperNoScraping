@@ -9,26 +9,27 @@ const app = express();
 app.use(logger("dev"))
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());;
-app.use(express.static("../public"));
+app.use(express.static("public"));
 mongoose.connect("mongodb://localhost/newsdb", { useNewUrlParser: true })
-app.get("/", function (req, res) {
-    res.send("Page loaded success");
-})
+// app.get("/", function (req, res) {
+//     res.send("Page loaded success");
+// })
 // app.get("/all", function (req, res) {
 //     db.news.find({}, function (err, found) {
 //         if (err) { console.log(err); }
 //         else { res.json({ found }); }
 //     })
 // })
+
 app.get("/scrape", function (req, res) {
     console.log("NEWS ARTICLES");
     axios.get("https://www.latimes.com/").then(function (response) {
 
         const $ = cheerio.load(response.data);
 
-        const results = [];
 
         $("h5").each(function (i, element) {
+            const results = [];
 
             const title = $(element).text();
             //add const for article summary, maybe pic
@@ -62,6 +63,17 @@ app.get("/articles/:id", function (req, res) {
         }).catch(function (err) {
             res.json(err);
         });
+});
+
+app.post("/articles/:id", function (req, res) {
+    db.Comment.create(req.body).then(function (dbComment) {
+        return db.Article.findOneAndUpdate({ _id: req.params.id },
+            { Comment: dbComment._id }, { new: true });
+    }).then(function (dbArticle) {
+        res.json(dbArticle);
+    }).catch(function (err) {
+        res.json(err);
+    });
 });
 
 app.listen(PORT, function () {
