@@ -11,10 +11,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());;
 app.use(express.static("../public"));
 mongoose.connect("mongodb://localhost/newsdb", { useNewUrlParser: true })
-// db.on("error", function (err) {
-//     console.log("Database error:", err);
-// });
-
 app.get("/", function (req, res) {
     res.send("Page loaded success");
 })
@@ -41,7 +37,7 @@ app.get("/scrape", function (req, res) {
                 title: title,
                 link: link
             });
-            db.Article.create(result).then(function (dbArticle) {
+            db.Article.create(results).then(function (dbArticle) {
                 console.log(dbArticle);
             }).catch(function (err) {
                 throw err;
