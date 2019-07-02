@@ -4,7 +4,6 @@ const logger = require("morgan");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const db = require("./models");
-const PORT = 8080;
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 
 const app = express();
@@ -76,9 +75,5 @@ app.post("/articles/:id", function (req, res) {
     }).catch(function (err) {
         res.json(err);
     });
-});
-
-app.listen(PORT, function () {
-    console.log("App listening on port 8080");
 });
 
