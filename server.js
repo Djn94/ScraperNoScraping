@@ -4,23 +4,15 @@ const logger = require("morgan");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const db = require("./models");
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://heroku_h23n30qs:7ckhars6aq49t2nodg898hv1cv@ds245927.mlab.com:45927/heroku_h23n30qs";
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/newsdb";
 
+const PORT = 8080;
 const app = express();
 app.use(logger("dev"))
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());;
 app.use(express.static("public"));
-mongoose.connect(MONGODB_URI);
-// app.get("/", function (req, res) {
-//     res.send("Page loaded success");
-// })
-// app.get("/all", function (req, res) {
-//     db.news.find({}, function (err, found) {
-//         if (err) { console.log(err); }
-//         else { res.json({ found }); }
-//     })
-// })
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true })
 
 app.get("/scrape", function (req, res) {
     console.log("NEWS ARTICLES");
@@ -74,6 +66,10 @@ app.post("/articles/:id", function (req, res) {
         res.json(dbArticle);
     }).catch(function (err) {
         res.json(err);
-    });
+    })
+})
+
+app.listen(PORT, function () {
+    console.log("App listening on port 8080");
 });
 
