@@ -5,7 +5,7 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 const db = require("./models");
 const PORT = 8080;
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/newsdb";
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 
 const app = express();
 app.use(logger("dev"))
