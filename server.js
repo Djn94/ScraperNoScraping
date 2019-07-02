@@ -46,13 +46,22 @@ app.get("/scrape", function (req, res) {
         res.send("scrape finished")
     });
 });
-
+//omg it pulls articles from my data base which also means they're being stored correctly omggg
 app.get("/articles", function (req, res) {
     db.Article.find({}).then(function (dbArticle) {
         res.json(dbArticle);
     }).catch(function (err) {
         res.json(err);
     });
+});
+
+app.get("/articles/:id", function (req, res) {
+    db.Article.findOne({ _id: req.params.id }).populate("comment").then(
+        function (dbArticle) {
+            res.json(dbArticle);
+        }).catch(function (err) {
+            res.json(err);
+        });
 });
 
 app.listen(PORT, function () {
