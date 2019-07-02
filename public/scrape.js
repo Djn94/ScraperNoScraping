@@ -13,6 +13,7 @@ $.getJSON("/articles", function (data) {
     }
 });
 $(document).on("click", "p", function () {
+    console.log("on click P works")
     $("#comments").empty();
     //need a div for comments
     const thisId = $(this).attr("data-id");
@@ -23,7 +24,7 @@ $(document).on("click", "p", function () {
         console.log(data);
         $("#comments").append("<h2>" + data.title + "</h2>");
         $("#comments").append("<input id='authorinput' name='author' >");
-        $("#comments").append("<textarea id='commentinput' name='comment></textarea>");
+        $("#comments").append("<textarea id='commentinput' name='comment'></textarea>");
         $("#comments").append("<button data-id='" + data._id + "' id='savecomment'>Add Comment</button>");
         if (data.comment) {
             $("#authorinput").val(data.comment.author);
@@ -34,17 +35,20 @@ $(document).on("click", "p", function () {
 });
 
 //save comment button functionality
-$(document).on("click", "#savecomment", function () {
+$(document).on("click", "#savecomment", function (event) {
+    event.preventDefault();
     const thisId = $(this).attr("data-id");
+    console.log(thisId);
     $.ajax({
         method: "POST",
-        url: "/articles" + thisId,
+        url: "/articles/" + thisId,
         data: {
             author: $("#authorinput").val(),
             commentBody: $("#commentinput").val()
         }
     }).then(function (data) {
         console.log(data)
+        console.log('datasaved');
         $("#notes").empty();
     });
     $("#authorinput").val("");
