@@ -6,7 +6,7 @@ const cheerio = require("cheerio");
 const db = require("./models");
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/newsdb";
 
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 const app = express();
 app.use(logger("dev"))
 app.use(express.urlencoded({ extended: true }));
