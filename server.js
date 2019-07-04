@@ -1,13 +1,17 @@
 const express = require("express");
+const path = require('path');
 const mongoose = require("mongoose");
 const logger = require("morgan");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const db = require("./models");
+const hbs = require('express-handlebars');
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/newsdb";
-
 const PORT = process.env.PORT || 8080;
 const app = express();
+app.engine('hbs', hbs({ extname: 'hbs', defaultLayout: 'layout', layoutsDir: __dirname + '/views/layouts' }));
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'hbs')
 app.use(logger("dev"))
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());;
