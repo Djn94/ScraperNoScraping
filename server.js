@@ -5,19 +5,27 @@ const logger = require("morgan");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const db = require("./models");
-const hbs = require('express-handlebars');
+const exphbs = require('express-handlebars');
+const bodyParser = require('body-parser');
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/newsdb";
 const PORT = process.env.PORT || 8080;
 const app = express();
-app.engine('hbs', hbs({ extname: 'hbs', defaultLayout: 'layout', layoutsDir: __dirname + '/views/layouts' }));
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'hbs')
+const routes = require("./routes/route")
+
+app.use(express.static(path.join(__dirname, 'public')))
+// app.engine('handlebars', hbs({ extname: '.hbs', defaultLayout: 'main', }));
+// app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'handlebars')
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
 app.use(logger("dev"))
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());;
-app.use(express.static("public"));
+app.get('/', (req, res) => {
+    res.render('main');
+})
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true })
-
+app.use('/', routes);
 app.get("/scrape", function (req, res) {
     console.log("NEWS ARTICLES");
     axios.get("https://www.latimes.com/").then(function (response) {
