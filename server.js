@@ -6,23 +6,20 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 const db = require("./models");
 const exphbs = require('express-handlebars');
-const bodyParser = require('body-parser');
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/newsdb";
 const PORT = process.env.PORT || 8080;
 const app = express();
 const routes = require("./routes/route")
 
 app.use(express.static(path.join(__dirname, 'public')))
-// app.engine('handlebars', hbs({ extname: '.hbs', defaultLayout: 'main', }));
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'handlebars')
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
-app.set("view engine", "handlebars");
+app.engine('handlebars', exphbs({ extname: 'handlebars', defaultLayout: 'main', layoutsDir: __dirname + '/views/layouts' }));
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'handlebars');
 app.use(logger("dev"))
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());;
 app.get('/', (req, res) => {
-    res.render('main');
+    res.render('index');
 })
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true })
 app.use('/', routes);
@@ -70,16 +67,16 @@ app.get("/articles/:id", function (req, res) {
         });
 });
 
-app.post("/articles/:id", function (req, res) {
-    db.Comment.create(req.body).then(function (dbComment) {
-        return db.Article.findOneAndUpdate({ _id: req.params.id },
-            { Comment: dbComment._id }, { new: true });
-    }).then(function (dbArticle) {
-        res.json(dbArticle);
-    }).catch(function (err) {
-        res.json(err);
-    })
-})
+// app.post("/articles/:id", function (req, res) {
+//     db.Comment.create(req.body).then(function (dbComment) {
+//         return db.Article.findOneAndUpdate({ _id: req.params.id },
+//             { Comment: dbComment._id }, { new: true });
+//     }).then(function (dbArticle) {
+//         res.json(dbArticle);
+//     }).catch(function (err) {
+//         res.json(err);
+//     })
+// })
 
 app.listen(PORT, function () {
     console.log("App listening on port 8080");
