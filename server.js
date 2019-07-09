@@ -57,6 +57,13 @@ app.get("/articles", function (req, res) {
         res.json(err);
     });
 });
+app.get("/comments", function (req, res) {
+    db.Comment.find({}).then(function (dbComment) {
+        res.json(dbComment);
+    }).catch(function (err) {
+        res.json(err);
+    });
+});
 
 app.get("/articles/:id", function (req, res) {
     db.Article.findOne({ _id: req.params.id }).populate("comment").then(
@@ -66,17 +73,24 @@ app.get("/articles/:id", function (req, res) {
             res.json(err);
         });
 });
+app.get("/comments/:id", function (req, res) {
+    db.Comment.findOne({ _id: req.params.id }).populate("article").then(function (dbComment) {
+        res.json(dbComment);
+    }).catch(function (err) {
+        res.json(err);
+    });
+});
 
-// app.post("/articles/:id", function (req, res) {
-//     db.Comment.create(req.body).then(function (dbComment) {
-//         return db.Article.findOneAndUpdate({ _id: req.params.id },
-//             { Comment: dbComment._id }, { new: true });
-//     }).then(function (dbArticle) {
-//         res.json(dbArticle);
-//     }).catch(function (err) {
-//         res.json(err);
-//     })
-// })
+app.post("/articles/:id", function (req, res) {
+    db.Comment.create(req.body).then(function (dbComment) {
+        return db.Article.findOneAndUpdate({ _id: req.params.id },
+            { Comment: dbComment._id }, { new: true });
+    }).then(function (dbArticle) {
+        res.json(dbArticle);
+    }).catch(function (err) {
+        res.json(err);
+    })
+})
 
 app.listen(PORT, function () {
     console.log("App listening on port 8080");

@@ -12,10 +12,11 @@ $.getJSON("/articles", function (data) {
 
     }
 });
+
 $(document).on("click", "p", function () {
     console.log("on click P works")
     $("#comments").empty();
-    //need a div for comments
+
     const thisId = $(this).attr("data-id");
     $.ajax({
         method: "GET",
@@ -26,6 +27,14 @@ $(document).on("click", "p", function () {
         $("#comments").append("<input id='authorinput' name='author' >");
         $("#comments").append("<textarea id='commentinput' name='comment'></textarea>");
         $("#comments").append("<button data-id='" + data._id + "' id='savecomment'>Add Comment</button>");
+        $.getJSON("/comments", function (data) {
+            for (var i = 0; i < data.length; i++) {
+                $("#commentDisplay").append(
+                    "<p data-id='" + data[i]._id + "'>" +
+                    data[i].author +
+                    "<br />" + data[i].commentBody + "</p>");
+            }    //need a div for comments
+        });
         if (data.comment) {
             $("#authorinput").val(data.comment.author);
             $("#commentinput").val(data.comment.commentBody);
@@ -50,6 +59,7 @@ $(document).on("click", "#savecomment", function (event) {
         console.log(data)
         console.log('datasaved');
         $("#notes").empty();
+
     });
     $("#authorinput").val("");
     $("#commentinput").val("");
